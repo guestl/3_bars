@@ -5,33 +5,32 @@ import os.path
 from math import radians, cos, sin, asin, sqrt
 
 
-def load_data(filepath):
-    if filepath:
-        with codecs.open(filepath, 'r', 'utf8') as f:
+def load_json_from file(file_path):
+    if file_path:
+        with codecs.open(file_path, 'r', 'utf8') as f:
             json_file_data = f.read()
     return json_file_data
 
 
-def parse_data(loaded_data):
-    seatsCount_dict = dict()
+def get_parsed_json(loaded_data):
+    seats_сount_dict = dict()
     gps_dict = dict()
     pure_data = dict()
 
     try:
         parsed_json_data = json.loads(loaded_data)
     except Exception as e:
-        raise e
-        print("Error in json file")
-        exit()
+        print("Unexpected error in json file")
+        return None, None, None
 
-    for elem in parsed_json_data['features']:
-        seatsCount_dict[elem['properties']['RowId']] = elem['properties']['Attributes']['SeatsCount']
+    for item in parsed_json_data['features']:
+        seats_сount_dict[item['properties']['RowId']] = item['properties']['Attributes']['SeatsCount']
 
-        gps_dict[elem['properties']['RowId']] = elem['geometry']['coordinates']
+        gps_dict[item['properties']['RowId']] = item['geometry']['coordinates']
 
-        pure_data[elem['properties']['RowId']] = elem['properties']['Attributes']
+        pure_data[item['properties']['RowId']] = item['properties']['Attributes']
 
-    return seatsCount_dict, gps_dict, pure_data
+    return seats_сount_dict, gps_dict, pure_data
 
 
 def get_biggest_bar(bars_dict):
@@ -74,15 +73,19 @@ if __name__ == '__main__':
                \nExample: python bars.py <path to json file>")
         exit()
 
-    json_filename = sys.argv[1]
+    json_file_name = sys.argv[1]
 
-    if os.path.isfile(json_filename):
-        loaded_data = load_data(json_filename)
+    if os.path.isfile(json_file_name):
+        loaded_data = load_json_from file(json_file_name)
     else:
-        print("Json file '%s' must exists" % json_filename)
+        print("Json file '%s' must exists" % json_file_name)
         exit()
 
-    seatsCount_dict, gps_dict, pure_json_data = parse_data(loaded_data)
+    seats_сount_dict, gps_dict, pure_json_data = get_parsed_json(loaded_data)
+
+    if seats_сount_dict is None:
+        print("Something went wrong during json parsing.")
+        exit()
 
     try:
         user_longitude = float(input("Enter your longitude\
@@ -94,8 +97,8 @@ if __name__ == '__main__':
             \nYou have to use only digits and dots")
         exit()
 
-    smallest_bar_id = get_smallest_bar(seatsCount_dict)
-    biggest_bar_id = get_biggest_bar(seatsCount_dict)
+    smallest_bar_id = get_smallest_bar(seats_сount_dict)
+    biggest_bar_id = get_biggest_bar(seats_сount_dict)
     closest_bar_id = get_closest_bar(gps_dict, user_latitude, user_longitude)
 
     print("Smallest bar is %s located in %s and with %s seats" % 
