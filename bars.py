@@ -5,7 +5,7 @@ import os.path
 from math import radians, cos, sin, asin, sqrt
 
 
-def load_json_from file(file_path):
+def load_json_from_file(file_path):
     if file_path:
         with codecs.open(file_path, 'r', 'utf8') as f:
             json_file_data = f.read()
@@ -76,7 +76,7 @@ if __name__ == '__main__':
     json_file_name = sys.argv[1]
 
     if os.path.isfile(json_file_name):
-        loaded_data = load_json_from file(json_file_name)
+        loaded_data = load_json_from_file(json_file_name)
     else:
         print("Json file '%s' must exists" % json_file_name)
         exit()
