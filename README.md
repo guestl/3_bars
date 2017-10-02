@@ -1,19 +1,35 @@
 # Ближайшие бары
 
-[FIXME. Здесь будет описание проекта]
+Скрипт, который рассчитает:
+
+* самый большой бар;
+* самый маленький бар;
+* самый близкий бар (текущие gps-координаты пользователь вводит с клавиатуры).
 
 # Как запустить
 
 Скрипт требует для своей работы установленного интерпретатора Python версии 3.5
+
+После запуска скрипт попросит ввести свои координаты, чтобы определить ближайший бар. Координаты вводятся в формате 1.2345, 6.7890
 
 Запуск на Linux:
 
 ```#!bash
 
 $ python bars.py # possibly requires call of python3 executive instead of just python
-# FIXME вывести пример ответа скрипта
+```
+
+Пример вывода:
 
 ```
+python bars.py bars.json
+Enter your longitude
+(for example: 1.234567890):37.62
+Enter your latitude
+(for example: 1.234567890):55.77
+Smallest bar is БАР. СОКИ located in Дубравная улица, дом 34/29 and with 0 seats
+Biggest bar is Спорт бар «Красная машина» located in Автозаводская улица, дом 23, строение 1 and with 450 seats
+Closest bar for user is Бар Виват located in посёлок Ерино, дом 1 and with 35 seats
 
 Запуск на Windows происходит аналогично.
 
