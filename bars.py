@@ -80,7 +80,7 @@ if __name__ == '__main__':
          \n(for example: 1.234567890):"))
         user_latitude = float(input("Enter your latitude\
          \n(for example: 1.234567890):"))
-    except Exception as e:
+    except ValueError:
         print("Incorrect coordinates. \
             \nYou have to use only digits and dots")
         exit()
