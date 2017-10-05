@@ -3,7 +3,7 @@ import codecs
 import sys
 import os.path
 from math import radians, cos, sin, asin, sqrt
-
+import logging
 
 def load_json_from_file(file_path):
     if file_path:
@@ -50,19 +50,24 @@ def haversine(lon1, lat1, lon2, lat2):
 
 
 def get_closest_bar(bars_list, longitude, latitude):
-    distance_list = list()
-
-    for single_bar in bars_list:
-        distance_list.append([single_bar, haversine(single_bar['geometry']['coordinates'][0],
+    distance_list = [([single_bar, haversine(single_bar['geometry']['coordinates'][0],
                              single_bar['geometry']['coordinates'][1],
-                             longitude, latitude)])
+                             longitude, latitude)]) for single_bar in bars_list]
 
     return min(distance_list, key=lambda x: x[1])[0]
 
+
+def get_print_bar_string(single_bar, str_bar_property):
+    return str_bar_property + " bar is {} located in {} and with {} seats".\
+    format(single_bar['properties']['Attributes']['Name'], 
+    single_bar['properties']['Attributes']['Address'],
+    single_bar['properties']['Attributes']['SeatsCount'])
+
+
 if __name__ == '__main__':
     if len(sys.argv) != 2:
-        print("You have to use json file name as parameters. \
-               \nExample: python bars.py <path to json file>")
+        logging.error("You have to use json file name as parameters. \
+                       \nExample: python bars.py <path to json file>")
         exit()
 
     json_file_name = sys.argv[1]
@@ -70,7 +75,7 @@ if __name__ == '__main__':
     if os.path.isfile(json_file_name):
         loaded_data = load_json_from_file(json_file_name)
     else:
-        print("Json file '%s' must exists" % json_file_name)
+        logging.error("Json file '{}' must exists".format(json_file_name))
         exit()
 
     parsed_json_dict = get_parsed_json(loaded_data)
@@ -81,7 +86,7 @@ if __name__ == '__main__':
         user_latitude = float(input("Enter your latitude\
          \n(for example: 1.234567890):"))
     except ValueError:
-        print("Incorrect coordinates. \
+        logging.error("Incorrect coordinates. \
             \nYou have to use only digits and dots")
         exit()
 
@@ -89,17 +94,6 @@ if __name__ == '__main__':
     biggest_bar = get_biggest_bar(parsed_json_dict)
     closest_bar = get_closest_bar(parsed_json_dict, user_latitude, user_longitude)
 
-    print("Smallest bar is %s located in %s and with %s seats" % 
-    (smallest_bar['properties']['Attributes']['Name'], 
-    smallest_bar['properties']['Attributes']['Address'],
-    smallest_bar['properties']['Attributes']['SeatsCount']))
-
-    print("Biggest bar is %s located in %s and with %s seats" % 
-    (biggest_bar['properties']['Attributes']['Name'], 
-    biggest_bar['properties']['Attributes']['Address'],
-    biggest_bar['properties']['Attributes']['SeatsCount']))
-
-    print("Closest bar is %s located in %s and with %s seats" % 
-    (closest_bar['properties']['Attributes']['Name'], 
-    closest_bar['properties']['Attributes']['Address'],
-    closest_bar['properties']['Attributes']['SeatsCount']))
+    print(get_print_bar_string(smallest_bar, 'Smallest'))
+    print(get_print_bar_string(biggest_bar, 'Biggest'))
+    print(get_print_bar_string(closest_bar, 'Closest'))
