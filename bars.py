@@ -89,10 +89,8 @@ if __name__ == '__main__':
         exit()
 
     try:
-        user_longitude = float(input("Enter your longitude\
-         \n(for example: 1.234567890):"))
-        user_latitude = float(input("Enter your latitude\
-         \n(for example: 1.234567890):"))
+        user_longitude = float(input("Enter your longitude:"))
+        user_latitude = float(input("Enter your latitude:"))
     except ValueError:
         logging.error("Incorrect coordinates. \
             \nYou have to use only digits and dots")
