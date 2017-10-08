@@ -96,11 +96,9 @@ if __name__ == '__main__':
             \nYou have to use only digits and dots")
         exit()
 
-    smallest_bar = get_smallest_bar(parsed_json_dict)
-    biggest_bar = get_biggest_bar(parsed_json_dict)
     closest_bar = get_closest_bar(
         parsed_json_dict, user_latitude, user_longitude)
 
-    print(get_print_bar_string(smallest_bar, 'Smallest'))
-    print(get_print_bar_string(biggest_bar, 'Biggest'))
+    print(get_print_bar_string(get_smallest_bar(parsed_json_dict), 'Smallest'))
+    print(get_print_bar_string(get_biggest_bar(parsed_json_dict), 'Biggest'))
     print(get_print_bar_string(closest_bar, 'Closest'))
