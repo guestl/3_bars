@@ -86,7 +86,6 @@ if __name__ == '__main__':
     parsed_json_dict = get_parsed_json(loaded_data)
 
     if parsed_json_dict is None:
-        logging.error("Empty json data")
         exit()
 
     try:
