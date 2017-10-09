@@ -21,13 +21,14 @@
 
 ```#!bash
 
-$ python bars.py # possibly requires call of python3 executive instead of just python
+$ python bars.py -jfn bars.json 
+# possibly requires call of python3 executive instead of just python
 ```
 
 Пример вывода:
 
 ```
-python bars.py bars.json
+python bars.py -jfn bars.json
 Enter your longitude
 (for example: 1.234567890):37.62
 Enter your latitude

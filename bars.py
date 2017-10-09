@@ -1,6 +1,6 @@
 import json
 import codecs
-import sys
+import argparse
 import os.path
 from math import radians, cos, sin, asin, sqrt
 import logging
@@ -70,12 +70,14 @@ def get_print_bar_string(single_bar, str_bar_property):
 
 
 if __name__ == '__main__':
-    if len(sys.argv) != 2:
-        logging.error("You have to use json file name as parameters. \
-                       \nExample: python bars.py <path to json file>")
-        exit()
+    # Look at command-line args
+    parser = argparse.ArgumentParser(description='This script look for\
+             smallest, biggest and closest bar in Moscow.')
+    parser.add_argument('--jfn', '-jfn', type=str, required=True,
+                        help='JSON filename.')
 
-    json_file_name = sys.argv[1]
+    args = parser.parse_args()
+    json_file_name = args.jfn
 
     if os.path.isfile(json_file_name):
         loaded_data = load_json_from_file(json_file_name)
