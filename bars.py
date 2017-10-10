@@ -7,39 +7,33 @@ import logging
 
 
 def load_json_from_file(file_path):
-    if file_path:
-        with codecs.open(file_path, 'r', 'utf8') as f:
-            json_file_data = f.read()
+    with codecs.open(file_path, 'r', 'utf8') as f:
+        json_file_data = f.read()
     return json_file_data
 
 
 def get_parsed_json(loaded_data):
     try:
         parsed_json_data = json.loads(loaded_data)
+        return parsed_json_data['features']
     except ValueError:
         logging.error("Value error in json file")
         return None
 
-    return parsed_json_data['features']
 
-
-def get_biggest_bar(bars_list):
-    return max(bars_list,
+def get_biggest_bar(bars_dict):
+    return max(bars_dict,
                key=lambda x: x['properties']['Attributes']['SeatsCount'])
 
 
-def get_smallest_bar(bars_list):
-    return min(bars_list,
+def get_smallest_bar(bars_dict):
+    return min(bars_dict,
                key=lambda x: x['properties']['Attributes']['SeatsCount'])
 
 
 def haversine(lon1, lat1, lon2, lat2):
-    """
-    Calculate the great circle distance between two points
-    on the earth (specified in decimal degrees)
+    # from https://stackoverflow.com/questions/4913349/
 
-    from https://stackoverflow.com/questions/4913349/
-    """
     # convert decimal degrees to radians
     lon1, lat1, lon2, lat2 = map(radians, [lon1, lat1, lon2, lat2])
 
@@ -70,33 +64,30 @@ def get_print_bar_string(single_bar, str_bar_property):
 
 
 if __name__ == '__main__':
-    # Look at command-line args
     parser = argparse.ArgumentParser(description='This script look for\
              smallest, biggest and closest bar in Moscow.')
-    parser.add_argument('--jfn', '-jfn', type=str, required=True,
+    parser.add_argument('json_filename', type=str,
                         help='JSON filename.')
 
     args = parser.parse_args()
-    json_file_name = args.jfn
+    json_filename = args.json_filename
 
-    if os.path.isfile(json_file_name):
-        loaded_data = load_json_from_file(json_file_name)
+    if os.path.isfile(json_filename):
+        loaded_data = load_json_from_file(json_filename)
     else:
-        logging.error("Json file '{}' must exists".format(json_file_name))
-        exit()
+        exit("Json file '{}' must exists".format(json_filename))
 
     parsed_json_dict = get_parsed_json(loaded_data)
 
-    if parsed_json_dict is None:
+    if not parsed_json_dict:
         exit()
 
     try:
         user_longitude = float(input("Enter your longitude:"))
         user_latitude = float(input("Enter your latitude:"))
     except ValueError:
-        logging.error("Incorrect coordinates. \
+        exit("Incorrect coordinates. \
             \nYou have to use only digits and dots")
-        exit()
 
     closest_bar = get_closest_bar(
         parsed_json_dict, user_latitude, user_longitude)

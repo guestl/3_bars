@@ -21,18 +21,16 @@
 
 ```#!bash
 
-$ python bars.py -jfn bars.json 
+$ python bars.py json_filename
 # possibly requires call of python3 executive instead of just python
 ```
 
 Пример вывода:
 
 ```
-python bars.py -jfn bars.json
-Enter your longitude
-(for example: 1.234567890):37.62
-Enter your latitude
-(for example: 1.234567890):55.77
+python bars.py bars.json
+Enter your longitude:37.62
+Enter your latitude:55.77
 Smallest bar is БАР. СОКИ located in Дубравная улица, дом 34/29 and with 0 seats
 Biggest bar is Спорт бар «Красная машина» located in Автозаводская улица, дом 23, строение 1 and with 450 seats
 Closest bar for user is Бар Виват located in посёлок Ерино, дом 1 and with 35 seats
