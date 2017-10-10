@@ -3,7 +3,6 @@ import codecs
 import argparse
 import os.path
 from math import radians, cos, sin, asin, sqrt
-import logging
 
 
 def load_json_from_file(file_path):
@@ -17,7 +16,6 @@ def get_parsed_json(loaded_data):
         parsed_json_data = json.loads(loaded_data)
         return parsed_json_data['features']
     except ValueError:
-        logging.error("Value error in json file")
         return None
 
 
@@ -33,17 +31,14 @@ def get_smallest_bar(bars_dict):
 
 def haversine(lon1, lat1, lon2, lat2):
     # from https://stackoverflow.com/questions/4913349/
-
-    # convert decimal degrees to radians
     lon1, lat1, lon2, lat2 = map(radians, [lon1, lat1, lon2, lat2])
 
-    # haversine formula
     dlon = lon2 - lon1
     dlat = lat2 - lat1
     a_koeff = sin(dlat / 2) ** 2 + cos(lat1) * cos(lat2) * sin(dlon / 2) ** 2
     c_koeff = 2 * asin(sqrt(a_koeff))
 
-    earth_radius = 6371  # in kilometers. Use 3956 for miles
+    earth_radius = 6371
     return c_koeff * earth_radius
 
 
@@ -80,7 +75,7 @@ if __name__ == '__main__':
     parsed_json_dict = get_parsed_json(loaded_data)
 
     if not parsed_json_dict:
-        exit()
+        exit("Value error in json file")
 
     try:
         user_longitude = float(input("Enter your longitude:"))
